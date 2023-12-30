@@ -110,15 +110,15 @@ namespace NokiaIBConverterApp
 
         private void StartConversion()
         {
-            try
-            {
+           
                 var writerType = cmbFormatType.SelectedItem == cmbVcfType ? WriterType.VCF : WriterType.CSV;
                 var outpuType = cmbOutputType.SelectedItem == cmbOneFile ? OutputType.Single : OutputType.Multi;
                 var factory = new WriterFactory();
 
-                var targetFolderUniqueName = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
+                var targetFolderUniqueName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
                 var targetFolderName = txtTargetFolder.Text + Path.DirectorySeparatorChar + targetFolderUniqueName;
-
+            try
+            {
                 IWriter writer = outpuType == OutputType.Single ?
                     factory.CreateSingleFileWriter(writerType, targetFolderName, "contacts") :
                     factory.CreateMultiFileWriter(writerType, targetFolderName);
@@ -131,7 +131,10 @@ namespace NokiaIBConverterApp
             }
             catch (Exception e)
             {
-                var errorStr = $"ארעה שגיאה בעיבוד הקובץ. פרטי שגיאה : {e.Message}";
+                var errorStr = $"ארעה שגיאה בעיבוד הקובץ:\n" +
+                                $"נתיב הקובץ:{targetFolderName}\n" +
+                                $"פרטי שגיאה:{e}";
+
                 MessageBox.Show(errorStr, "שגיאה", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
 

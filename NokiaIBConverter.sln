@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NokiaIBConverter", "NokiaIBConverter\NokiaIBConverter.csproj", "{7D6797AA-89B7-4286-9E14-18771C4017DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NokiaIBConverterApp", "NokiaIBConverterApp\NokiaIBConverterApp.csproj", "{205D60CE-5A60-4A2C-8C6A-A0C04FFAB382}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NokiaIBConverterApp", "NokiaIBConverterApp\NokiaIBConverterApp.csproj", "{205D60CE-5A60-4A2C-8C6A-A0C04FFAB382}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

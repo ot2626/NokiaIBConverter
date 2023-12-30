@@ -13,11 +13,13 @@ namespace NokiaIBConverter
         public VcfWriter(string contactsFolderPath)
         {
             _contactsFolderPath = contactsFolderPath;
+            CreateTargetFolder(contactsFolderPath);
         }
 
         public VcfWriter(string contactsFolderPath, string vcfFileName)
         {
             _contactsFolderPath = contactsFolderPath;
+            CreateTargetFolder(contactsFolderPath);
             _streamWriter = new StreamWriter($"{contactsFolderPath}\\{vcfFileName}", false, Encoding.UTF8);
         }
 
@@ -48,7 +50,18 @@ namespace NokiaIBConverter
         private string CleanString(string str)
         {
             return new Regex(string.Format("[{0}]", Regex.Escape(new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars())))).Replace(str, string.Empty);
+        }
 
+        private void CreateTargetFolder(string targetFolder)
+        {
+            try
+            {
+                Directory.CreateDirectory(targetFolder);
+            }
+            catch
+            {
+                // do nothing
+            }
         }
     }
 

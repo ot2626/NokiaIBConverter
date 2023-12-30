@@ -1,10 +1,10 @@
-﻿using Microsoft.Win32;
-using NokiaIBConverter;
+﻿using NokiaIBConverter;
 using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
@@ -15,9 +15,61 @@ namespace NokiaIBConverterApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const string SettingsFileName = "NokiaBIConverterSettings.config";
+        private const char SettingsFileNameSeperator = ';';
+
         public MainWindow()
         {
             InitializeComponent();
+            LoadSettings();
+        }
+
+        private void LoadSettings()
+        {
+            try
+            {
+                var settingsFilePath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + SettingsFileName;
+                var settingsStr = File.Exists(settingsFilePath) ? File.ReadAllText(settingsFilePath).Split(SettingsFileNameSeperator) : null;
+
+                if (settingsStr != null && settingsStr.Any())
+                {
+                    txtSourceFile.Text = settingsStr[0];
+                    txtTargetFolder.Text = settingsStr[1];
+                    cmbFormatType.SelectedIndex = Convert.ToInt32(settingsStr[2]);
+                    cmbOutputType.SelectedIndex = Convert.ToInt32(settingsStr[3]);
+                }
+            }
+            catch
+            {
+                // do nothing
+            }
+        }
+
+        private void SaveSettings()
+        {
+            try
+            {
+                var settingsFilePath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + SettingsFileName;
+
+                var settingsStr = 
+                    txtSourceFile.Text + SettingsFileNameSeperator + 
+                    txtTargetFolder.Text + SettingsFileNameSeperator +
+                    cmbFormatType.SelectedIndex.ToString() + SettingsFileNameSeperator +
+                    cmbOutputType.SelectedIndex.ToString();
+
+                if (File.Exists(settingsFilePath))
+                {
+                    File.Delete(settingsFilePath);
+                }
+
+                File.WriteAllText(settingsFilePath, settingsStr);
+
+
+            }
+            catch
+            {
+                // do nothing
+            }
         }
 
         private void btnSelectDestination_Click(object sender, RoutedEventArgs e)
@@ -53,6 +105,7 @@ namespace NokiaIBConverterApp
                 MessageBox.Show("אחד או יותר מהשדות ריקים או לא נכונים", "שגיאה", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
 
+            SaveSettings();
             StartConversion();
 
         }
@@ -63,9 +116,12 @@ namespace NokiaIBConverterApp
             var outpuType = cmbOutputType.SelectedItem == cmbOneFile ? OutputType.Single : OutputType.Multi;
             var factory = new WriterFactory();
 
+            var targetFolderUniqueName = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
+            var targetFolderName = txtTargetFolder.Text + Path.DirectorySeparatorChar + targetFolderUniqueName;
+
             IWriter writer = outpuType == OutputType.Single ?
-                factory.CreateSingleFileWriter(writerType, txtTargetFolder.Text, "contacts") :
-                factory.CreateMultiFileWriter(writerType, txtTargetFolder.Text);
+                factory.CreateSingleFileWriter(writerType, targetFolderName, "contacts") :
+                factory.CreateMultiFileWriter(writerType, targetFolderName);
 
             var converter = new Converter(writer, txtSourceFile.Text);
             try
@@ -89,6 +145,12 @@ namespace NokiaIBConverterApp
                 !string.IsNullOrEmpty(txtTargetFolder.Text) &&
                 File.Exists(txtSourceFile.Text) &&
                 Directory.Exists(txtTargetFolder.Text);
+        }
+
+        private void mnuABout_Click(object sender, RoutedEventArgs e)
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            MessageBox.Show($"ממיר אנשי קשר נוקיה. גרסה {version.Major}.{version.Minor}.{version.Build}", "אודות", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

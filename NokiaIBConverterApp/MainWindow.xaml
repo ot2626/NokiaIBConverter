@@ -9,22 +9,25 @@
         Title="ממיר אנשי קשר נוקיה" Height="460" Width="400" Background="#FF232B4F" Foreground="White"
         WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" ShowInTaskbar="True" Icon="/NokiaConverter.jpg">
     <Grid>
-        <TextBox x:Name="txtSourceFile" HorizontalAlignment="Left" Margin="28,30,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="325" Height="21" FlowDirection="LeftToRight"/>
-        <Label Content="קובץ מקור" HorizontalAlignment="Left" Margin="28,7,0,0" VerticalAlignment="Top" Foreground="White" Width="120" FontSize="10"/>
-        <Button x:Name="btnSelectSource" Content="..." HorizontalAlignment="Left" Margin="358,32,0,0" VerticalAlignment="Top" Width="21" Height="18" Click="btnSelectSource_Click"/>
-        <TextBox x:Name="txtTargetFolder" HorizontalAlignment="Left" Margin="28,89,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="325" Height="21" FlowDirection="LeftToRight"/>
-        <Label Content="תיקיית יעד" HorizontalAlignment="Left" Margin="28,66,0,0" VerticalAlignment="Top" Foreground="White" Width="120" FontSize="10"/>
-        <Button x:Name="btnSelectDestination" Content="..." HorizontalAlignment="Left" Margin="358,90,0,0" VerticalAlignment="Top" Width="21" Height="18" Click="btnSelectDestination_Click" RenderTransformOrigin="3.857,0.613"/>
-        <ComboBox x:Name="cmbFormatType" HorizontalAlignment="Left" Margin="29,147,0,0" VerticalAlignment="Top" Width="324" Height="21" >
+        <TextBox x:Name="txtSourceFile" HorizontalAlignment="Left" Margin="26,60,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="325" Height="21" FlowDirection="LeftToRight"/>
+        <Label Content="קובץ מקור" HorizontalAlignment="Left" Margin="26,37,0,0" VerticalAlignment="Top" Foreground="White" Width="120" FontSize="10"/>
+        <Button x:Name="btnSelectSource" Content="..." HorizontalAlignment="Left" Margin="356,62,0,0" VerticalAlignment="Top" Width="21" Height="18" Click="btnSelectSource_Click"/>
+        <TextBox x:Name="txtTargetFolder" HorizontalAlignment="Left" Margin="26,119,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="325" Height="21" FlowDirection="LeftToRight"/>
+        <Label Content="תיקיית יעד" HorizontalAlignment="Left" Margin="26,96,0,0" VerticalAlignment="Top" Foreground="White" Width="120" FontSize="10"/>
+        <Button x:Name="btnSelectDestination" Content="..." HorizontalAlignment="Left" Margin="356,120,0,0" VerticalAlignment="Top" Width="21" Height="18" Click="btnSelectDestination_Click" RenderTransformOrigin="3.857,0.613"/>
+        <ComboBox x:Name="cmbFormatType" HorizontalAlignment="Left" Margin="27,177,0,0" VerticalAlignment="Top" Width="324" Height="21" >
             <ComboBoxItem x:Name="cmbVcfType" Content="VCF" IsSelected="True" Tag="0"/>
             <!--<ComboBoxItem  x:Name="cmbCsvType" Content="CSV" Tag="1"/>-->
         </ComboBox>
-        <Label Content="פורמט המרה" HorizontalAlignment="Left" Margin="29,124,0,0" VerticalAlignment="Top" Foreground="White" Width="120" FontSize="10"/>
-        <ComboBox x:Name="cmbOutputType" HorizontalAlignment="Left" Margin="30,207,0,0" VerticalAlignment="Top" Width="323" Height="21" >
+        <Label Content="פורמט המרה" HorizontalAlignment="Left" Margin="27,154,0,0" VerticalAlignment="Top" Foreground="White" Width="120" FontSize="10"/>
+        <ComboBox x:Name="cmbOutputType" HorizontalAlignment="Left" Margin="28,237,0,0" VerticalAlignment="Top" Width="323" Height="21" >
             <ComboBoxItem x:Name="cmbMultiFile" Content="קובץ נפרד לכל איש קשר" IsSelected="True" Tag="0"/>
             <ComboBoxItem x:Name="cmbOneFile" Content="קובץ מרוכז אחד לכל אנשי הקשר" Tag="1"/>
         </ComboBox>
-        <Label Content="סוג המרה" HorizontalAlignment="Left" Margin="30,184,0,0" VerticalAlignment="Top" Foreground="White" Width="120" FontSize="10"/>
-        <Button x:Name="btnStart" Content="התחל..." HorizontalAlignment="Left" Margin="28,293,0,0" VerticalAlignment="Top" Width="325" Height="40" Click="btnStart_Click"/>
+        <Label Content="סוג המרה" HorizontalAlignment="Left" Margin="28,214,0,0" VerticalAlignment="Top" Foreground="White" Width="120" FontSize="10"/>
+        <Button x:Name="btnStart" Content="התחל..." HorizontalAlignment="Left" Margin="28,332,0,0" VerticalAlignment="Top" Width="325" Height="40" Click="btnStart_Click"/>
+        <Menu Height="19" VerticalAlignment="Top">
+            <MenuItem x:Name="mnuABout" Header="אודות..." Click="mnuABout_Click"/>
+        </Menu>
     </Grid>
 </Window>

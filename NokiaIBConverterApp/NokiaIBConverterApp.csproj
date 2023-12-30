@@ -4,11 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net472</TargetFramework>
     <UseWPF>true</UseWPF>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PackageIcon>NokiaConverter.jpg</PackageIcon>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="NokiaConverter.jpg" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NokiaIBConverter\NokiaIBConverter.csproj" />
@@ -21,5 +19,20 @@
   <ItemGroup>
     <Resource Include="NokiaConverter.jpg" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NokiaConverter.jpg">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="App\" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /E /Y /R $(ProjectDir)$(OutDir)*.exe $(ProjectDir)App&#xD;&#xA;xcopy /E /Y /R $(ProjectDir)$(OutDir)*.dll $(ProjectDir)App" />
+  </Target>
 
 </Project>

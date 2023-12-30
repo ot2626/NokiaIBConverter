@@ -1,5 +1,6 @@
 ﻿using NokiaIBConverter;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -110,13 +111,13 @@ namespace NokiaIBConverterApp
 
         private void StartConversion()
         {
-           
-                var writerType = cmbFormatType.SelectedItem == cmbVcfType ? WriterType.VCF : WriterType.CSV;
-                var outpuType = cmbOutputType.SelectedItem == cmbOneFile ? OutputType.Single : OutputType.Multi;
-                var factory = new WriterFactory();
 
-                var targetFolderUniqueName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
-                var targetFolderName = txtTargetFolder.Text + Path.DirectorySeparatorChar + targetFolderUniqueName;
+            var writerType = cmbFormatType.SelectedItem == cmbVcfType ? WriterType.VCF : WriterType.CSV;
+            var outpuType = cmbOutputType.SelectedItem == cmbOneFile ? OutputType.Single : OutputType.Multi;
+            
+            var factory = new WriterFactory();
+            var targetFolderUniqueName = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", new CultureInfo("en-US"));
+            var targetFolderName = txtTargetFolder.Text + Path.DirectorySeparatorChar + targetFolderUniqueName;
             try
             {
                 IWriter writer = outpuType == OutputType.Single ?

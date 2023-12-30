@@ -9,6 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="App\NokiaIBConverter\**" />
+    <EmbeddedResource Remove="App\NokiaIBConverter\**" />
+    <None Remove="App\NokiaIBConverter\**" />
+    <Page Remove="App\NokiaIBConverter\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="App\NokiaIBConverter.dll" />
+    <None Remove="App\NokiaIBConverter.zip" />
+    <None Remove="App\NokiaIBConverterApp.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NokiaIBConverter\NokiaIBConverter.csproj" />
   </ItemGroup>
 

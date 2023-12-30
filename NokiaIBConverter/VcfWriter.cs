@@ -54,14 +54,7 @@ namespace NokiaIBConverter
 
         private void CreateTargetFolder(string targetFolder)
         {
-            try
-            {
-                Directory.CreateDirectory(targetFolder);
-            }
-            catch
-            {
-                // do nothing
-            }
+            Directory.CreateDirectory(targetFolder);
         }
     }
 

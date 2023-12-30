@@ -39,9 +39,9 @@ namespace NokiaIBConverterApp
                     cmbOutputType.SelectedIndex = Convert.ToInt32(settingsStr[3]);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // do nothing
+                MessageBox.Show($"ארעה שגיאה. {ex}", "שגיאה", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 
@@ -63,12 +63,10 @@ namespace NokiaIBConverterApp
                 }
 
                 File.WriteAllText(settingsFilePath, settingsStr);
-
-
             }
-            catch
+            catch (Exception ex)
             {
-                // do nothing
+                MessageBox.Show($"ארעה שגיאה. {ex}", "שגיאה", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 
@@ -112,20 +110,21 @@ namespace NokiaIBConverterApp
 
         private void StartConversion()
         {
-            var writerType = cmbFormatType.SelectedItem == cmbVcfType ? WriterType.VCF : WriterType.CSV;
-            var outpuType = cmbOutputType.SelectedItem == cmbOneFile ? OutputType.Single : OutputType.Multi;
-            var factory = new WriterFactory();
-
-            var targetFolderUniqueName = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            var targetFolderName = txtTargetFolder.Text + Path.DirectorySeparatorChar + targetFolderUniqueName;
-
-            IWriter writer = outpuType == OutputType.Single ?
-                factory.CreateSingleFileWriter(writerType, targetFolderName, "contacts") :
-                factory.CreateMultiFileWriter(writerType, targetFolderName);
-
-            var converter = new Converter(writer, txtSourceFile.Text);
             try
             {
+                var writerType = cmbFormatType.SelectedItem == cmbVcfType ? WriterType.VCF : WriterType.CSV;
+                var outpuType = cmbOutputType.SelectedItem == cmbOneFile ? OutputType.Single : OutputType.Multi;
+                var factory = new WriterFactory();
+
+                var targetFolderUniqueName = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
+                var targetFolderName = txtTargetFolder.Text + Path.DirectorySeparatorChar + targetFolderUniqueName;
+
+                IWriter writer = outpuType == OutputType.Single ?
+                    factory.CreateSingleFileWriter(writerType, targetFolderName, "contacts") :
+                    factory.CreateMultiFileWriter(writerType, targetFolderName);
+
+                var converter = new Converter(writer, txtSourceFile.Text);
+
                 var resultsCount = converter.Convert();
                 var messageStr = $"הסתיים בהצלחה.{resultsCount} רשומות הומרו";
                 MessageBox.Show(messageStr, "הודעה", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -135,7 +134,7 @@ namespace NokiaIBConverterApp
                 var errorStr = $"ארעה שגיאה בעיבוד הקובץ. פרטי שגיאה : {e.Message}";
                 MessageBox.Show(errorStr, "שגיאה", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
-            
+
         }
 
         private bool Validate()

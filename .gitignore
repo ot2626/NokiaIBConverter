@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/NokiaIBConverterApp/App/NokiaIBConverter/NokiaBIConverterSettings.config
+/NokiaIBConverterApp/App/NokiaIBConverter/NokiaIBConverter.dll
+/NokiaIBConverterApp/App/NokiaIBConverter/NokiaIBConverterApp.exe
+/NokiaIBConverterApp/App/NokiaIBConverter.dll
+/NokiaIBConverterApp/App/NokiaIBConverter.zip
+/NokiaIBConverterApp/App/NokiaIBConverterApp.exe

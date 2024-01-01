@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
 using MessageBox = System.Windows.MessageBox;
+using MessageBoxOptions = System.Windows.MessageBoxOptions;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace NokiaIBConverterApp
@@ -153,7 +154,11 @@ namespace NokiaIBConverterApp
         private void mnuABout_Click(object sender, RoutedEventArgs e)
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            MessageBox.Show($"ממיר אנשי קשר נוקיה. גרסה {version.Major}.{version.Minor}.{version.Build}", "אודות", MessageBoxButton.OK, MessageBoxImage.Information);
+            var message = $"ממיר אנשי קשר נוקיה. גרסה {version.Major}.{version.Minor}.{version.Build}\n" +
+                          $"השימוש בתוכנה באחריות המשתמש בלבד ואין אחריות על תקינות הנתונים.\n" +
+                          $"התוכנה נכתבה לזיכוי הרבים ואין לקחת עליה או על השימוש בה תשלום.";
+
+            MessageBox.Show(message, "אודות", MessageBoxButton.OK, MessageBoxImage.Information,MessageBoxResult.OK, MessageBoxOptions.RightAlign | MessageBoxOptions.RtlReading);
         }
     }
 }

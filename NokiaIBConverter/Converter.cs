@@ -129,7 +129,7 @@ namespace NokiaIBConverter
                 {
                     phoneNumber = "+" + phoneNumber;
                 }
-                phoneNumber = phoneNumber.Replace("A", "*");
+                phoneNumber = phoneNumber.Replace("A", "*").Replace("C", "p").Replace("B", "#");
 
                 contact.PhoneNumber = phoneNumber;
             }

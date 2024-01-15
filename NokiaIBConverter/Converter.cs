@@ -120,67 +120,67 @@ namespace NokiaIBConverter
 
             return contact;
         }
-    }
 
-    private static string[] PhoneNumber(int type, int offset, FileStream reader)
-    {
-        if (type == 0)
+        private static string[] PhoneNumber(int type, int offset, FileStream reader)
         {
-            string[] empty = { "", "" };
-            return empty;
+            if (type == 0)
+            {
+                string[] empty = { "", "" };
+                return empty;
+            }
+    
+            reader.Seek(offset, SeekOrigin.Current);
+            byte[] numBytes = new byte[1];
+            reader.Read(numBytes, 0, 1);
+            byte[] numType = new byte[1];
+            reader.Read(numType, 0, 1);
+            byte[] phoneBytes = new byte[numBytes[0]];
+            reader.Read(phoneBytes, 0, numBytes[0]);
+    
+            string phoneNumber = string.Empty;
+            string phoneType = string.Empty;
+    
+            if (phoneBytes.Length > 0 && phoneBytes[0] != 0x00)
+            {
+                
+                string revPhoneNumber = string.Empty;
+                for (int i = 0; i < phoneBytes.Length; i++)
+                {
+                    revPhoneNumber += phoneBytes[i].ToString("X2");
+                }
+                for (int i = 0; i < revPhoneNumber.Length; i += 2)
+                {
+                    phoneNumber += revPhoneNumber[i + 1];
+                    phoneNumber += revPhoneNumber[i];
+                }
+                if (numType[0] == 0x11)
+                {
+                    phoneNumber = "+" + phoneNumber;
+                }
+                phoneNumber = phoneNumber.Replace("A", "*").Replace("C", "p").Replace("B", "#");
+    
+                switch (type)
+                {
+                    case 1:
+                        phoneType = "CELL";
+                        break;
+                    case 2:
+                        phoneType = "HOME";
+                        break;
+                    case 3:
+                        phoneType = "WORK";
+                        break;
+                    default:
+                        phoneType = "CELL";
+                        break;
+                }
+    
+            }
+    
+            var phoneNumberOffset = numBytes[0] + 2 + offset;
+            reader.Seek(-phoneNumberOffset, SeekOrigin.Current);
+            string[] number = { phoneType, phoneNumber };
+            return number;
         }
-
-        reader.Seek(offset, SeekOrigin.Current);
-        byte[] numBytes = new byte[1];
-        reader.Read(numBytes, 0, 1);
-        byte[] numType = new byte[1];
-        reader.Read(numType, 0, 1);
-        byte[] phoneBytes = new byte[numBytes[0]];
-        reader.Read(phoneBytes, 0, numBytes[0]);
-
-        string phoneNumber = string.Empty;
-        string phoneType = string.Empty;
-
-        if (phoneBytes.Length > 0 && phoneBytes[0] != 0x00)
-        {
-            
-            string revPhoneNumber = string.Empty;
-            for (int i = 0; i < phoneBytes.Length; i++)
-            {
-                revPhoneNumber += phoneBytes[i].ToString("X2");
-            }
-            for (int i = 0; i < revPhoneNumber.Length; i += 2)
-            {
-                phoneNumber += revPhoneNumber[i + 1];
-                phoneNumber += revPhoneNumber[i];
-            }
-            if (numType[0] == 0x11)
-            {
-                phoneNumber = "+" + phoneNumber;
-            }
-            phoneNumber = phoneNumber.Replace("A", "*").Replace("C", "p").Replace("B", "#");
-
-            switch (type)
-            {
-                case 1:
-                    phoneType = "CELL";
-                    break;
-                case 2:
-                    phoneType = "HOME";
-                    break;
-                case 3:
-                    phoneType = "WORK";
-                    break;
-                default:
-                    phoneType = "CELL";
-                    break;
-            }
-
-        }
-
-        var phoneNumberOffset = numBytes[0] + 2 + offset;
-        reader.Seek(-phoneNumberOffset, SeekOrigin.Current);
-        string[] number = { phoneType, phoneNumber };
-        return number;
     }
 }

@@ -29,7 +29,9 @@ namespace NokiaIBConverter
             StreamWriter streamWriter = _streamWriter;
             var firstName = contact.FirstName ?? string.Empty;
             var lastName = contact.LastName ?? string.Empty;
-            var phone = contact.PhoneNumber ?? string.Empty;
+            var phone = contact.PhoneNumber;
+            var phone2 = contact.PhoneNumber2;
+            var phone3 = contact.PhoneNumber3;
             
             if (streamWriter == null)
             {
@@ -42,7 +44,18 @@ namespace NokiaIBConverter
             streamWriter.WriteLine("VERSION:2.1");
             streamWriter.WriteLine($"FN;ENCODING=QUOTED-PRINTABLE;CHARSET=utf-8:{firstName} {lastName}");
             streamWriter.WriteLine($"N;ENCODING=QUOTED-PRINTABLE;CHARSET=utf-8:{firstName};{lastName}");
-            streamWriter.WriteLine($"TEL;CELL:{phone.Replace("F", string.Empty)}");
+            if (phone[1] != string.Empty)
+            {
+                streamWriter.WriteLine($"TEL;{phone[0]}:{phone[1].Replace("F", string.Empty)}");
+            }
+            if (phone2[1] != string.Empty)
+            {
+                streamWriter.WriteLine($"TEL;{phone2[0]}:{phone2[1].Replace("F", string.Empty)}");
+            }
+            if (phone3[1] != string.Empty)
+            {
+                streamWriter.WriteLine($"TEL;{phone3[0]}:{phone3[1].Replace("F", string.Empty)}");
+            }
             streamWriter.WriteLine("END:VCARD");
             localWriterScope?.Dispose();
         }

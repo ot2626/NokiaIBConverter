@@ -20,7 +20,7 @@ namespace NokiaIBConverter
         {
             _contactsFolderPath = contactsFolderPath;
             CreateTargetFolder(contactsFolderPath);
-            _streamWriter = new StreamWriter($"{contactsFolderPath}\\{vcfFileName}", false, Encoding.UTF8);
+            _streamWriter = new StreamWriter($"{contactsFolderPath}\\{vcfFileName}", false, UTF8Encoding(false));
         }
 
         public void Write(ContactEntry contact)
@@ -36,7 +36,7 @@ namespace NokiaIBConverter
             if (streamWriter == null)
             {
                 var uniqueId = $"{_contactsFolderPath}\\{CleanString(firstName + lastName)}.vcf";
-                streamWriter = new StreamWriter(uniqueId, false, Encoding.UTF8);
+                streamWriter = new StreamWriter(uniqueId, false, UTF8Encoding(false));
                 localWriterScope = new StreamWriterScope(streamWriter);
             }
             

@@ -44,8 +44,4 @@
     <Folder Include="App\" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /E /Y /R $(ProjectDir)$(OutDir)*.exe $(ProjectDir)App&#xD;&#xA;xcopy /E /Y /R $(ProjectDir)$(OutDir)*.dll $(ProjectDir)App" />
-  </Target>
-
 </Project>

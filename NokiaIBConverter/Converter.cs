@@ -103,24 +103,52 @@ namespace NokiaIBConverter
             var lNameRevOffset = (lNameLength * blockSize) + blockSize + 0xB4;
             reader.Seek(-lNameRevOffset, SeekOrigin.Current);
 
-            //Find phone number
-            reader.Seek(0x1E, SeekOrigin.Current);
+            //Find phone numbers
+            reader.Seek(0x1B, SeekOrigin.Current);
+            byte[] phoneOneType = new byte[1];
+            reader.Read(phoneOneType, 0, 1);
+            byte[] phoneTwoType = new byte[1];
+            reader.Read(phoneTwoType, 0, 1);
+            byte[] phoneThreeType = new byte[1];
+            reader.Read(phoneThreeType, 0, 1);
+            var typeOffset = 3 + 0x1B;
+            reader.Seek(-typeOffset, SeekOrigin.Current);
+
+            contact.PhoneNumber = PhoneNumber(phoneOneType[0], 0x1E, reader);
+            contact.PhoneNumber2 = PhoneNumber(phoneTwoType[0], 0x34, reader);
+            contact.PhoneNumber3 = PhoneNumber(phoneThreeType[0], 0x4A, reader);
+
+            return contact;
+        }
+
+        private static string[] PhoneNumber(int type, int offset, FileStream reader)
+        {
+            if (type == 0)
+            {
+                string[] empty = { "", "" };
+                return empty;
+            }
+    
+            reader.Seek(offset, SeekOrigin.Current);
             byte[] numBytes = new byte[1];
             reader.Read(numBytes, 0, 1);
             byte[] numType = new byte[1];
             reader.Read(numType, 0, 1);
             byte[] phoneBytes = new byte[numBytes[0]];
             reader.Read(phoneBytes, 0, numBytes[0]);
-
+    
+            string phoneNumber = string.Empty;
+            string phoneType = string.Empty;
+    
             if (phoneBytes.Length > 0 && phoneBytes[0] != 0x00)
             {
-                string phoneNumber = string.Empty;
+                
                 string revPhoneNumber = string.Empty;
                 for (int i = 0; i < phoneBytes.Length; i++)
                 {
                     revPhoneNumber += phoneBytes[i].ToString("X2");
                 }
-                for (int i = 0; i < revPhoneNumber.Length; i += blockSize)
+                for (int i = 0; i < revPhoneNumber.Length; i += 2)
                 {
                     phoneNumber += revPhoneNumber[i + 1];
                     phoneNumber += revPhoneNumber[i];
@@ -129,15 +157,30 @@ namespace NokiaIBConverter
                 {
                     phoneNumber = "+" + phoneNumber;
                 }
-                phoneNumber = phoneNumber.Replace("A", "*");
-
-                contact.PhoneNumber = phoneNumber;
+                phoneNumber = phoneNumber.Replace("A", "*").Replace("C", "p").Replace("B", "#");
+    
+                switch (type)
+                {
+                    case 1:
+                        phoneType = "CELL";
+                        break;
+                    case 2:
+                        phoneType = "HOME";
+                        break;
+                    case 3:
+                        phoneType = "WORK";
+                        break;
+                    default:
+                        phoneType = "CELL";
+                        break;
+                }
+    
             }
-
-            var phoneNumberOffset = numBytes[0] + 0x20;
+    
+            var phoneNumberOffset = numBytes[0] + 2 + offset;
             reader.Seek(-phoneNumberOffset, SeekOrigin.Current);
-
-            return contact;
+            string[] number = { phoneType, phoneNumber };
+            return number;
         }
     }
 }
